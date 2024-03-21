@@ -6,6 +6,11 @@ The FX Deal Management System is a software application developed by Mahmoud for
 analysis of foreign exchange deals (FX deals). The system allows users to input FX deal details, validate them, and
 persist them into a database for further analysis.
 
+## Deployment
+
+1. Run the bash script using `bash build_docker.sh`.
+2. Run the command `docker-compose up`.
+
 ## Components
 
 The system consists of the following main components:
