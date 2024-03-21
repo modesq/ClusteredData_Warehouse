@@ -1,0 +1,6 @@
+app:
+  datasource:
+    jdbc-url: jdbc:postgresql://localhost:5432/progressoftpostgresdb
+    username: postgres
+    password: password
+    pool-size: 25
