@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  # Spring Boot application
+  spring-app:
+    image: clusteredata_warehouse:latest   # Replace with your Spring Boot image
+    ports:
+      - "8080:8080"                               # Map container port to host port
+    depends_on:
+      - postgres-db                               # Wait for PostgreSQL container to be ready
+    environment:
+      APP_DATASOURCE_JDBC_URL: jdbc:postgresql://postgres-db:5432/progressoftpostgresdb
+      APP_DATASOURCE_USERNAME: postgres
+      APP_DATASOURCE_PASSWORD: password
+      APP_JPA_HIBERNATE_DDL_AUTO: update       # Optional: Hibernate DDL auto mode
+    networks:
+      - app-network
+
+  # PostgreSQL database
+  postgres-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: progressoftpostgresdb                     # Set default database name
+      POSTGRES_USER: postgres                       # Set default username
+      POSTGRES_PASSWORD: password               # Set default password
+    ports:
+      - "5432:5432"                               # Map container port to host port
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
