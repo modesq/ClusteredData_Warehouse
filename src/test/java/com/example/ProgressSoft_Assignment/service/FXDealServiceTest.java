@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -143,5 +142,27 @@ public class FXDealServiceTest {
 
         assertThat(result).isEqualTo(0);
         verify(fxDealDaoMock, times(1)).updateFXDealById(id, fxDeal);
+    }
+
+    @Test
+    public void testAddFXDeal_InvalidCurrencyCode_FromCurrency_ExceptionThrown() {
+        FXDeal fxDeal = new FXDeal(UUID.randomUUID(), "deal123", "INVALID", "EUR", LocalDateTime.now(), 100.0);
+
+        assertThatThrownBy(() -> fxDealService.addFXDeal(fxDeal))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Invalid FX deal data");
+
+        verifyNoInteractions(fxDealDaoMock);
+    }
+
+    @Test
+    public void testAddFXDeal_InvalidCurrencyCode_ToCurrency_ExceptionThrown() {
+        FXDeal fxDeal = new FXDeal(UUID.randomUUID(), "deal123", "USD", "INVALID", LocalDateTime.now(), 100.0);
+
+        assertThatThrownBy(() -> fxDealService.addFXDeal(fxDeal))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Invalid FX deal data");
+
+        verifyNoInteractions(fxDealDaoMock);
     }
 }
